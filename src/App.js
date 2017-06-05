@@ -1,9 +1,14 @@
 import React, { Component } from "react";
-import ReactListView from "react-list-view";
 import ReactFileReader from "react-file-reader";
-import styled from "styled-components";
 import "./App.css";
-
+import {
+  UploadButton,
+  ContactWrapper,
+  ContactAvatar,
+  ChatViewWrapper,
+  SMSChatViewWrapper,
+  SMSList
+} from "./Style";
 // returns a dictionary of the xml
 const parseXMLtoDict = xml => {
   let dict = {};
@@ -40,29 +45,15 @@ class MainView extends Component {
   sanitizeXML(e) {
     let doc = new DOMParser().parseFromString(e.target.result, "text/xml");
     const result = parseXMLtoDict(doc);
-    this.setState({ smses: result, uploaded: true }, () => {
-      console.log(this.state.smses);
-    });
+    this.setState({ smses: result, uploaded: true });
   }
   handleFiles = files => {
-    var fileresult;
     let reader = new FileReader();
     reader.readAsText(files[0]);
     //reader.onprogress TODO
     reader.onload = this.sanitizeXML.bind(this);
   };
   render() {
-    const UploadButton = styled.button`
-      padding: 2% !important;
-      background: ${props => (props.primary ? "palevioletred" : "white")};
-    	color: ${props => (props.primary ? "white" : "palevioletred")};
-    	font-size: 1em;
-    	margin: 1em;
-    	padding: 0.25em 1em;
-    	border: 2px solid palevioletred;
-    	border-radius: 3px;
-      `;
-
     if (!this.state.uploaded) {
       return (
         <div className="App">
@@ -96,20 +87,53 @@ class MainView extends Component {
         </div>
       );
     } else {
-      return <SMSView />;
+      return <SMSView smses={this.state.smses} />;
     }
   }
 }
-
+const Contact = ({ address, body }) => {
+  return (
+    <ContactWrapper>
+      <ContactAvatar>
+        UK
+      </ContactAvatar>
+      <div>
+        <div style={{ fontWeight: "700", marginBottom: "2px" }}>{address}</div>
+        <div style={{ color: "grey" }}>{body}</div>
+      </div>
+    </ContactWrapper>
+  );
+};
+const ChatView = () => {
+  return <ChatViewWrapper />;
+};
 class SMSView extends Component {
   constructor(props) {
     super(props);
+    let smses = props.smses;
+    let item = Object.keys(smses).map(elem => {
+      let { address, body } = smses[elem][0];
+      return { address, body };
+    });
+    this.state = { sms: item };
   }
-  _renderItem(x, y) {
-    return <div style={{ height: "100%" }}>Item #{x},#{y}</div>;
+  rowRenderer({ key, index, style }) {
+    let sms = this.state.sms[index];
+    return <Contact key={key} address={sms.address} body={sms.body} />;
   }
   render() {
-    return <ReactListView renderItem={this._renderItem} />;
+    return (
+      <SMSChatViewWrapper>
+        <SMSList
+          width={400}
+          height={window.innerHeight}
+          rowCount={this.state.sms.length}
+          rowHeight={50}
+          rowRenderer={this.rowRenderer.bind(this)}
+        />
+        <ChatView />
+      </SMSChatViewWrapper>
+    );
   }
 }
 
