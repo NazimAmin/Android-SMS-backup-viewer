@@ -9,9 +9,10 @@ import {
   SMSChatViewWrapper,
   SMSList
 } from "./Style";
+
+let dict = {};
 // returns a dictionary of the xml
 const parseXMLtoDict = xml => {
-  let dict = {};
   let smses = xml.getElementsByTagName("sms");
   for (let sms of smses) {
     const address = sms.attributes.getNamedItem("address").value;
@@ -91,22 +92,37 @@ class MainView extends Component {
     }
   }
 }
-const Contact = ({ address, body }) => {
+const Contact = ({ address, body, style, onClick }) => {
   return (
-    <ContactWrapper>
+    <ContactWrapper
+      style={{ ...style, borderBottom: "1px solid #f1f1f1" }}
+      onClick={() => onClick && onClick()}
+    >
       <ContactAvatar>
         UK
       </ContactAvatar>
-      <div>
-        <div style={{ fontWeight: "700", marginBottom: "2px" }}>{address}</div>
-        <div style={{ color: "grey" }}>{body}</div>
+      <div style={{ marginBottom: "2px" }}>
+        <div style={{ fontWeight: "700" }}>
+          {address}
+        </div>
+        <div style={{ color: "grey" }}>
+          {body.length < 30 ? body : body.substr(0, 30) + ".."}
+        </div>
       </div>
     </ContactWrapper>
   );
 };
-const ChatView = () => {
-  return <ChatViewWrapper />;
-};
+class ChatView extends Component {
+  render() {
+    return (
+      <ChatViewWrapper>
+        <h2 className="App" style={{ justifyContent: "center" }}>
+          Select a contact from the list
+        </h2>
+      </ChatViewWrapper>
+    );
+  }
+}
 class SMSView extends Component {
   constructor(props) {
     super(props);
@@ -116,10 +132,22 @@ class SMSView extends Component {
       return { address, body };
     });
     this.state = { sms: item };
+    this.handleClick = this.handleClick.bind(this);
+  }
+  handleClick(item) {
+    console.log(dict[item]);
   }
   rowRenderer({ key, index, style }) {
     let sms = this.state.sms[index];
-    return <Contact key={key} address={sms.address} body={sms.body} />;
+    return (
+      <Contact
+        style={style}
+        key={key}
+        address={sms.address}
+        body={sms.body}
+        onClick={() => this.handleClick(sms.address)}
+      />
+    );
   }
   render() {
     return (
