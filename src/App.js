@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import ReactFileReader from "react-file-reader";
 import "./App.css";
+import Bubble from "./Bubble";
 import {
   UploadButton,
   ContactWrapper,
@@ -55,49 +56,48 @@ class MainView extends Component {
     reader.onload = this.sanitizeXML.bind(this);
   };
   render() {
-    if (!this.state.uploaded) {
-      return (
-        <div className="App">
-          <div className="App-header">
-            <p className="App-intro">
-              To get started, upload an XML file in
-              <code>
-                {`
-                <smses>
-                  <sms
-                    address="3214348976"
-                    date="315967535846"
-                    type="2"
-                    subject="null"
-                    body="Your message string"
-                    readable_date="Jan 6, 1980 6:45:35 AM"
-                  />
-                  ...
-                </smses>
-              `}
-              </code>
-              format.
-            </p>
-            <ReactFileReader
-              fileTypes="text/xml"
-              handleFiles={this.handleFiles}
-            >
-              <UploadButton primary>Upload XML file</UploadButton>
-            </ReactFileReader>
-          </div>
-        </div>
-      );
-    } else {
-      return <SMSView smses={this.state.smses} />;
-    }
+    return (
+      <div>
+        {!this.state.uploaded
+          ? <div className="App">
+              <div className="App-header">
+                <p className="App-intro">
+                  To get started, upload an XML file in
+                  <code>
+                    {`
+                      <smses>
+                        <sms
+                          address="3214348976"
+                          date="315967535846"
+                          type="2"
+                          subject="null"
+                          body="Your message string"
+                          readable_date="Jan 6, 1980 6:45:35 AM"
+                        />
+                        ...
+                      </smses>
+                    `}
+                  </code>
+                  format.
+                </p>
+                <ReactFileReader
+                  fileTypes="text/xml"
+                  handleFiles={this.handleFiles}>
+                  <UploadButton primary>Upload XML file</UploadButton>
+                </ReactFileReader>
+              </div>
+            </div>
+          : <SMSView smses={this.state.smses} />}
+      </div>
+    );
   }
 }
+
 const Contact = ({ address, body, style, onClick }) => {
   return (
     <ContactWrapper
       style={{ ...style, borderBottom: "1px solid #f1f1f1" }}
-      onClick={() => onClick && onClick()}
-    >
+      onClick={onClick}>
       <ContactAvatar>
         UK
       </ContactAvatar>
@@ -113,12 +113,21 @@ const Contact = ({ address, body, style, onClick }) => {
   );
 };
 class ChatView extends Component {
+  _renderChat(sms) {
+    const bubble = sms.map((elem, index) =>
+      <Bubble key={index} text={elem.body} time={elem.date} type={elem.type} />
+    );
+    return bubble;
+  }
   render() {
+    const { sms } = this.props;
     return (
       <ChatViewWrapper>
-        <h2 className="App" style={{ justifyContent: "center" }}>
-          Select a contact from the list
-        </h2>
+        {sms.length < 1 &&
+          <h2 className="App" style={{ justifyContent: "center" }}>
+            Select a contact from the list
+          </h2>}
+        {sms.length > 0 && this._renderChat(sms)}
       </ChatViewWrapper>
     );
   }
@@ -131,11 +140,13 @@ class SMSView extends Component {
       let { address, body } = smses[elem][0];
       return { address, body };
     });
-    this.state = { sms: item };
+    this.state = { sms: item, display: [] };
     this.handleClick = this.handleClick.bind(this);
   }
   handleClick(item) {
-    console.log(dict[item]);
+    this.setState({ display: dict[item] });
+    console.log(item);
+    console.log(this.state.display);
   }
   rowRenderer({ key, index, style }) {
     let sms = this.state.sms[index];
@@ -159,7 +170,7 @@ class SMSView extends Component {
           rowHeight={50}
           rowRenderer={this.rowRenderer.bind(this)}
         />
-        <ChatView />
+        <ChatView sms={this.state.display} />
       </SMSChatViewWrapper>
     );
   }

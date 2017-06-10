@@ -41,13 +41,13 @@ export const ContactAvatar = styled.div`
   margin-right: 25px;
   `;
 export const SMSList = styled(List)`
-    flex: 0 0 25%;
+
     max-width: : 420px;
     outline:none !important;
     border-bottom: 1px solid #e6d8d8;
     cursor: pointer;
     @media (max-width: 700px){
-    flex-basis: 74px;
+    flex-basis: 35%;
     min-width: 74px;
     }
     `;
@@ -61,4 +61,24 @@ export const ChatViewWrapper = styled.div`
       @media (max-width: 920px){
         flex: 1 1 0%;
       }
+      `;
+export const BubbleWrapper = styled.div`
+  display: flex;
+  justify-content: ${props =>
+    props.messageType === "2" ? "flex-end" : "flex-start"};
+`;
+export const BubbleDiv = styled.div`
+        background-color: rgb(7, 191, 234);
+        color: white;
+        padding: 6px;
+        margin: 2px 6px 0 0;
+        border-radius: 6px;
+        display: inline-flex;
+        max-width: 50%;
+      `;
+export const BubbleTime = styled.div`
+        display: flex;
+        margin: 0 10px 0 10px;
+        padding: 0 0 0 4px;
+        color: ${props => (props.messageType === "2" ? "green" : "red")};
       `;
