@@ -1,21 +1,14 @@
 /* eslint-disable import/no-extraneous-dependencies, import/no-unresolved, import/extensions */
-
+//only for development
+// run storybook with yarn run storybook
 import React from "react";
 
 import { storiesOf } from "@storybook/react";
 import { action } from "@storybook/addon-actions";
 import { linkTo } from "@storybook/addon-links";
 
-import Button from "./Button";
-import { Bubble } from "./Bubble";
-
+import { Bubble } from "../Components/Bubble";
 storiesOf("ChatView", module)
-  .add("with text", () =>
-    <Button primary onClick={action("clicked")}>Hello Button</Button>
-  )
-  .add("with some emoji", () =>
-    <Button onClick={action("clicked")}>😀 😎 👍 💯</Button>
-  )
   .add("chat bubble short", () =>
     <Bubble
       text="oh hey how're you?"
@@ -26,9 +19,9 @@ storiesOf("ChatView", module)
   .add("chat bubble long", () =>
     <div>
       <Bubble
-        text="oh hey how're you? I'm doing great, thanks a lot for asking!"
-        time="sometime"
-        sent={true}
+        text="oh hey I'm doing great. Thanks a lot for asking!"
+        time="June 9, 2017"
+        messageType={2}
       />
       <Bubble
         text="oh hey how're you?"

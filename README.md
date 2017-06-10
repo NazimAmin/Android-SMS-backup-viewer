@@ -1,12 +1,11 @@
-#### About: Takes android message backup in XMl and displays as a chat view to read on PC
-#### Why? I had android devices earlier and found a lot of backups in XML format and wanted to go over them (why? HS memories)
+#### About: Takes message backup in XMl and displays as a chat view to read
+#### Why? To read old messages from old android devices
 
 ```js<smses>
                   <sms
                     address="3214348976"
                     date="315967535846"
                     type="2"
-                    subject="null"
                     body="Your message string"
                     readable_date="Jan 6, 1980 6:45:35 AM"
                   />
@@ -36,3 +35,6 @@ It correctly bundles React in production mode and optimizes the build for the be
 
 The build is minified and the filenames include the hashes.<br>
 Your app is ready to be deployed!
+
+![ScreenShot](https://raw.githubusercontent.com/NazimAmin/Android-SMS-backup-viewer/master/example-file/main.png "Main View")
+![ScreenShot](https://raw.githubusercontent.com/NazimAmin/Android-SMS-backup-viewer/master/example-file/chat.png "Second View")

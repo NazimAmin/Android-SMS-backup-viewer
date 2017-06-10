@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { BubbleWrapper, BubbleDiv, BubbleTime } from "./Style";
 
 export default class Bubble extends React.Component {
@@ -17,16 +18,30 @@ export default class Bubble extends React.Component {
   render() {
     const { text, time, type } = this.props;
     return (
-      <BubbleWrapper messageType={type}>
-        <BubbleDiv
-          onMouseOver={this.onMouseOver}
-          onMouseLeave={this.onMouseLeave}>
-          {text}
-        </BubbleDiv>
+      <div>
+        <BubbleWrapper messageType={type}>
+          <BubbleDiv
+            messageType={type}
+            onMouseOver={this.onMouseOver}
+            onMouseLeave={this.onMouseLeave}>
+            {text}
+          </BubbleDiv>
+        </BubbleWrapper>
         <BubbleTime messageType={type}>
           {this.state.showTime && `@` + time}
         </BubbleTime>
-      </BubbleWrapper>
+      </div>
     );
   }
 }
+Bubble.propTypes = {
+  text: PropTypes.string.isRequired,
+  time: PropTypes.string.isRequired,
+  type: PropTypes.string
+};
+
+Bubble.defaultProps = {
+  text: "You're supposed to pass a text prop",
+  time: "You're supposed to pass a time prop",
+  type: 2
+};

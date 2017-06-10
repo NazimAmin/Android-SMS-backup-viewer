@@ -6,11 +6,8 @@
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "react-file-reader": "^1.1.0",
-    "react-list-view": "^1.0.0",
     "react-virtualized": "^9.7.6",
-    "react.list": "^1.0.14",
-    "styled-components": "^2.0.0",
-    "xml2json": "^0.11.0"
+    "styled-components": "^2.0.0"
   },
   "devDependencies": {
     "react-scripts": "1.0.7",
