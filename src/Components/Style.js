@@ -56,6 +56,9 @@ export const ChatViewWrapper = styled.div`
     min-width: 500px;
     background-color: #fff;
     border-left: 1px solid rgba(0, 0, 0, .20);
+    overflow-y: auto;
+    height: 1500px;
+    max-height: 1500px;
     @media (max-width: 920px){
       flex: 1 1 0%;
     }
