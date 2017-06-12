@@ -35,6 +35,3 @@ It correctly bundles React in production mode and optimizes the build for the be
 
 The build is minified and the filenames include the hashes.<br>
 Your app is ready to be deployed!
-
-![ScreenShot](https://raw.githubusercontent.com/NazimAmin/Android-SMS-backup-viewer/master/example-file/main.png "Main View")
-![ScreenShot](https://raw.githubusercontent.com/NazimAmin/Android-SMS-backup-viewer/master/example-file/chat.png "Second View")
