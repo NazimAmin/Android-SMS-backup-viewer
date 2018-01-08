@@ -1,4 +1,4 @@
-#### About: Takes message backup in XMl and displays as a chat view to read
+#### About: Takes message backup in XML and displays as a chat view to read
 #### Why? To read old messages from old android devices
 
 ```js<smses>
